@@ -3,6 +3,7 @@ package com.tridente.membermanager.service;
 import com.tridente.membermanager.dao.UsuarioDAO;
 import com.tridente.membermanager.model.Rol;
 import com.tridente.membermanager.model.Usuario;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,6 +13,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,6 +21,8 @@ public class UsuarioServiceImpl implements UsuarioService{
     
     @Autowired
     private UsuarioDAO usuarioDAO;
+    
+    private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     
     @Override
     public List<Usuario> getAllUsuarios() {
@@ -32,6 +36,12 @@ public class UsuarioServiceImpl implements UsuarioService{
 
     @Override
     public void addUsuario(Usuario usuario) {
+        
+        String passwordEncoded = passwordEncoder.encode(usuario.getPassword());
+        usuario.setPassword(passwordEncoded);
+        
+        usuario.setRoles(Arrays.asList(Rol.builder().nombre("ADMIN").build()));
+        
         usuarioDAO.save(usuario);
     }
 

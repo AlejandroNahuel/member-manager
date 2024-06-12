@@ -1,11 +1,13 @@
 package com.tridente.membermanager.model;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Data;
 
 @Entity
 @Data
 @Table(name = "roles")
+@Builder
 public class Rol {
     
     @Id
@@ -15,4 +17,6 @@ public class Rol {
     
     @Column(name = "nombre")
     private String nombre;
+    
+    public Rol(){}
 }
