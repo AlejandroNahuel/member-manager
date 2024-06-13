@@ -7,7 +7,6 @@ import lombok.Data;
 @Entity
 @Data
 @Table(name = "roles")
-@Builder
 public class Rol {
     
     @Id

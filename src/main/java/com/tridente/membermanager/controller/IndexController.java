@@ -40,4 +40,9 @@ public class IndexController {
         
         return "redirect:/registro?exito";
     }
+    
+    @GetMapping("/test")
+    public String test(){
+        return "test";
+    }
 }

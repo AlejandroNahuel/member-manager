@@ -22,6 +22,9 @@ public class UsuarioServiceImpl implements UsuarioService{
     @Autowired
     private UsuarioDAO usuarioDAO;
     
+    @Autowired
+    private RolService rolService;
+    
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     
     @Override
@@ -40,7 +43,9 @@ public class UsuarioServiceImpl implements UsuarioService{
         String passwordEncoded = passwordEncoder.encode(usuario.getPassword());
         usuario.setPassword(passwordEncoded);
         
-        usuario.setRoles(Arrays.asList(Rol.builder().nombre("ADMIN").build()));
+        Rol rol = rolService.getRolById(2);
+        
+        usuario.setRoles(Arrays.asList(rol));
         
         usuarioDAO.save(usuario);
     }
