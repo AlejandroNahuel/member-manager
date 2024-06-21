@@ -41,7 +41,9 @@ public class SecurityConfig{
                 "/test",
                 "/img/**",
                 "/css/**",
-                "/js/**")
+                "/js/**",
+                "/test",
+                "/img/hero.jpeg")
             .permitAll()
             .anyRequest().authenticated())
         .formLogin(form ->

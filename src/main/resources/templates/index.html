@@ -3,84 +3,87 @@
         xmlns:th="http://www.thymeleaf.org"
         xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
-<meta charset="utf-8"/>
-<title>Inicio</title>
-<!-- Latest compiled and minified CSS -->
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-	integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
-	crossorigin="anonymous"/>
-
-<!-- Optional theme -->
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
-	integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
-	crossorigin="anonymous"/>
+    <meta charset="utf-8"/>
+    <title>Inicio</title>
+    <!-- Latest compiled and minified CSS -->
+    <link 
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" 
+        rel="stylesheet" 
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous"/>
 </head>
 <body>
-
-
-	<nav class="navbar navbar-inverse navbar-fixed-top">
-		<div class="container">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed"
-					data-toggle="collapse" data-target="#navbar" aria-expanded="false"
-					aria-controls="navbar">
-					<span class="sr-only">Toggle navigation</span> <span
-						class="icon-bar"></span> <span class="icon-bar"></span> <span
-						class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" th:href="@{/}">Registro e
-					inicio de sesión</a>
-			</div>
-			<div id="navbar" class="collapse navbar-collapse">
-				<ul class="nav navbar-nav">
-					<li sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Cerrar
-							sesión</a></li>
-				</ul>
-			</div>
-		</div>
-	</nav>
-
-	<br/>
-	<br/>
-
-	<div class="container">
-		<h1>Registro e inicio de sesión con Spring Boot + Spring Security
-			+ Thymeleaf + Hibernate + MySQL y Bootstrap</h1>
-		<br/>
-		<h4>
-			Bienvenido <span sec:authentication="principal.username"></span>
-		</h4>
-
-		<br/> <br/>
-
-		<table class="table table-striped table-bordered">
-			<thead class="table-dark">
-				<tr>
-					<th>ID</th>
-					<th>Nombre</th>
-					<th>Apellido</th>
-					<th>Email</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr th:each="usuario : ${usuarios}">
-					<td th:text="${usuario.id}">ID</td>
-					<td th:text="${usuario.nombre}">ID</td>
-					<td th:text="${usuario.apellido}">ID</td>
-					<td th:text="${usuario.email}">ID</td>
-				</tr>
-			</tbody>
-		</table>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme = "dark">
+	<div class="container-fluid">
+            <a th:href="@{/}" class="navbar-brand">Nombre Gimnasio</a>
+            <button 
+                type="button" class="navbar-toggler"
+		data-bs-toggle="collapse" data-bs-target="#navbar">
+		<span class="navbar-toggler-icon"></span>
+            </button>			
+            <div id="navbar" class="collapse navbar-collapse">
+		<ul class="navbar-nav">
+                    <li class="nav-item">
+			<a class="navbar-brand" th:href="@{/}">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a th:href="@{/addSocio}" class="navbar-brand">Añadir socio</a>
+                    </li>
+                    <li class="nav-item" sec:authorize="isAuthenticated()">
+                        <a class="navbar-brand" th:href="@{/logout}">Cerrar sesión</a>
+                    </li>
+		</ul>
+            </div>
 	</div>
+    </nav>
+    <img src="@{img/hero.jpeg}" alt="Hero"/>
+    <div class="container">
+        <h1>Gestión de socios</h1>
+        <br/>
+        <h4>
+            Bienvenido <span sec:authentication="principal.username"></span>
+        </h4>
 
-
-
-	<!-- Latest compiled and minified JavaScript -->
-	<script
-		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
-		integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-		crossorigin="anonymous"></script>
+	<form th:action="@{/socios/buscar}" method="POST" th:object="${socio}">
+            <div class="input-group mb-3">
+                <input 
+                    type="text" 
+                    class="form-control" 
+                    placeholder="Ingrese DNI socio"
+                    th:field="*{dni}" />
+                <button class="btn btn-primary" type="submit" id="button-addon2">Buscar</button>
+            </div>
+	</form>
+	<div class="card flex-row mb-3" th:if="${socio.id == 0}">			
+            <img th:src="@{img/default-user.jpeg}" width="300" class="img img-fluid rounded-start" alt="..."/>
+            <div class="card-body">			
+		<h5 class="card-title">Información de socio</h5>
+		<p class="card-text" >No hay información de socio para mostrar</p>
+				<!--<a href="#" class="btn btn-primary">Go somewhere</a>-->
+            </div>
+	</div>
+	<div class="card flex-row mb-3" th:unless="${socio.id == 0}">			
+            <img th:src="@{img/hero.jpeg}" width="300" class="img img-fluid rounded-start" alt="..."/>
+            <div class="card-body">			
+                <h5 class="card-title">Información de socio</h5>
+                <p class="card-text mb-1">Numero de socio: [[${socio.id}]]</p>
+                <p class="card-text mb-1">Nombre: [[${socio.name} + ' ' + ${socio.lastname}]]</p>
+                <p class="card-text">Fecha vencimiento: [[${socio.fechaVenc}]]</p>
+                <div th:unless="${socio.membershipExpired}">
+                    <div class="btn btn-success form-control" role="alert">Cuota al día</div>
+                </div>
+                <div th:if="${socio.membershipExpired}">
+                    <form th:action="@{/socios/updateMembership}" th:object="${socio}">
+                        <button 
+                            type="submit"
+                            class="btn btn-primary mb-3"
+                            name="id-socio">
+                                Actualizar pago
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>

@@ -2,6 +2,9 @@ package com.tridente.membermanager.service;
 
 import com.tridente.membermanager.dao.SocioDAO;
 import com.tridente.membermanager.model.Socio;
+import java.time.LocalDate;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +31,13 @@ public class SocioServiceImpl implements SocioService{
     @Override
     @Transactional
     public void addSocio(Socio socio) {
+        
+        LocalDate fechaPago = LocalDateTime.now().toLocalDate();
+
+        socio.setFechaPago(fechaPago);
+
+        socio.setFechaVenc(fechaPago.plusDays(30));
+        
         socioDAO.save(socio);
     }
 
